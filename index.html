@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Randomized Quick Sort</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4,#a18cd1,#6dd5fa);
+    background-size:400% 400%;
+    animation:bgmove 8s infinite alternate;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+@keyframes bgmove{
+    from{background-position:left;}
+    to{background-position:right;}
+}
+
+.container{
+    width:700px;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 12px 25px rgba(0,0,0,0.3);
+    text-align:center;
+}
+
+h1{
+    color:#e91e63;
+    margin-bottom:10px;
+}
+
+h2{
+    color:#3f51b5;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    text-align:left;
+    font-weight:bold;
+    color:#444;
+    margin-top:15px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:2px solid #2196F3;
+    border-radius:10px;
+    font-size:16px;
+    margin-top:8px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#4CAF50;
+    box-shadow:0 0 10px #4CAF50;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 30px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(45deg,#ff9800,#ff5722);
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.08);
+    background:linear-gradient(45deg,#43a047,#2e7d32);
+}
+
+.result{
+    margin-top:25px;
+    background:#f3f9ff;
+    border-left:8px solid #2196F3;
+    border-radius:10px;
+    padding:20px;
+    text-align:left;
+    font-size:18px;
+}
+
+.box{
+    background:#fff3cd;
+    padding:12px;
+    border-left:6px solid orange;
+    border-radius:8px;
+    margin-top:15px;
+}
+
+.footer{
+    margin-top:20px;
+    color:#666;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>⚡ Randomized Quick Sort</h1>
+<h2>Improving Quick Sort Efficiency using Randomized Algorithm</h2>
+
+<label>Enter Numbers (Comma Separated)</label>
+
+<input type="text" id="numbers" placeholder="Example: 45,12,78,3,25,67,10">
+
+<button onclick="sortNumbers()">Sort Numbers</button>
+
+<div class="result" id="output">
+<b>Sorted Result will appear here...</b>
+</div>
+
+<div class="footer">
+Design and Analysis of Algorithms Lab
+</div>
+
+</div>
+
+<script>
+
+function partition(arr, low, high){
+
+    let random = Math.floor(Math.random()*(high-low+1))+low;
+
+    [arr[random], arr[high]] = [arr[high], arr[random]];
+
+    let pivot = arr[high];
+
+    let i = low-1;
+
+    for(let j=low;j<high;j++){
+
+        if(arr[j] < pivot){
+
+            i++;
+            [arr[i],arr[j]]=[arr[j],arr[i]];
+
+        }
+
+    }
+
+    [arr[i+1],arr[high]]=[arr[high],arr[i+1]];
+
+    return i+1;
+
+}
+
+function randomizedQuickSort(arr,low,high){
+
+    if(low<high){
+
+        let pi=partition(arr,low,high);
+
+        randomizedQuickSort(arr,low,pi-1);
+
+        randomizedQuickSort(arr,pi+1,high);
+
+    }
+
+}
+
+function sortNumbers(){
+
+    let input=document.getElementById("numbers").value;
+
+    if(input.trim()==""){
+
+        alert("Please enter numbers.");
+
+        return;
+
+    }
+
+    let arr=input.split(",").map(Number);
+
+    let original=[...arr];
+
+    randomizedQuickSort(arr,0,arr.length-1);
+
+    let html="";
+
+    html+="<h3 style='color:green;'>✅ Sorting Completed</h3>";
+
+    html+="<div class='box'>";
+    html+="<b style='color:#d84315;'>Original Array</b><br>";
+    html+=original.join(", ");
+    html+="</div>";
+
+    html+="<div class='box'>";
+    html+="<b style='color:#1565c0;'>Sorted Array</b><br>";
+    html+=arr.join(", ");
+    html+="</div>";
+
+    html+="<br><b style='color:#2e7d32;'>Algorithm Used:</b> Randomized Quick Sort";
+
+    document.getElementById("output").innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>
